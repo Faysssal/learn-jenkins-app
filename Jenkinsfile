@@ -37,17 +37,17 @@ pipeline {
             agent {
                 docker{
                     image 'node:18-alpine'
+                    args '-u root'
                     reuseNode true
                 }
             }
             steps {
-                sh ''' 
-                    sh 'npm install netlify-cli
-                    sh './node_modules/.bin/netlify --version
-                    sh 'echo "Deplyong to production, Site ID: $NETLIFY_SITE_ID"
-                    sh './node_modules/.bin/netlify status
-                    sh './node_modules/.bin/netlify deploy --dir=build --prod
-                '''
+                sh 'apk add --no-cache python3 make g++'
+                sh 'npm install netlify-cli'
+                sh './node_modules/.bin/netlify --version'
+                sh 'echo "Deploying to production, Site ID: $NETLIFY_SITE_ID"'
+                sh './node_modules/.bin/netlify status'
+                sh './node_modules/.bin/netlify deploy --dir=build --prod'
             }
         }
     }
