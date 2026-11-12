@@ -41,6 +41,7 @@ pipeline {
                 }
             }
             steps {
+                sh 'apk add --no-cache python3 make g++'
                 sh 'npm install netlify-cli'
                 sh './node_modules/.bin/netlify --version'
                 sh 'echo "Deplyong to production, Site ID: $NETLIFY_SITE_ID"'
