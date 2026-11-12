@@ -9,8 +9,9 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                docker{
+                docker {
                     image 'node:18-alpine'
+                    args '-u root'
                     reuseNode true
                 }
             }
@@ -22,8 +23,9 @@ pipeline {
         
         stage('Test') {
             agent {
-                docker{
+                docker {
                     image 'node:18-alpine'
+                    args '-u root'
                     reuseNode true
                 }
             }
@@ -35,7 +37,7 @@ pipeline {
         
         stage('Deploy') {
             agent {
-                docker{
+                docker {
                     image 'node:18-alpine'
                     args '-u root'
                     reuseNode true
@@ -47,9 +49,8 @@ pipeline {
                 sh './node_modules/.bin/netlify --version'
                 sh 'echo "Deploying to production, Site ID: $NETLIFY_SITE_ID"'
                 sh './node_modules/.bin/netlify status'
-                sh './node_modules/.bin/netlify deploy --dir=build --prod --no-build'
+                sh './node_modules/.bin/netlify deploy --dir=build --prod --skip-build'
             }
         }
     }
-
 }
